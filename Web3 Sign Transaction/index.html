@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>WEB3 FRONTEND Dapp</title>
+
+    <script src="node_modules/web3.js-browser/build/web3.js"></script>
+    <script src="node_modules/web3/dist/web3.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<style>
+  table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+  </style>
+
+</head>
+
+  <body>
+
+    <div class="container">
+      <div class="header clearfix">
+        <nav>
+          <ul class="nav nav-pills float-right">
+            
+          </ul>
+        </nav>
+        <h3 class="text-muted" style="text-align:center;">WEB3 Interactions frontend</h3>
+      </div>
+
+      <div class="breadcrumb">
+        
+        
+        <p ><a class="btn btn-lg btn-success" href="#"  id="currentaddress" role="button">Metamask Is Not Connected</a></p>
+      </div>
+
+<fieldset class="form-horizontal">
+
+<!-- Form Name -->
+<legend>Sign Transaction</legend>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Private Key</label>  
+  <div class="col-md-4">
+  <input id="pkey" name="pkey" type="text" placeholder="enter your private key" class="form-control input-md">
+    
+  </div>
+</div>
+
+
+
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Recipient address</label>  
+  <div class="col-md-4">
+  <input id="recaddress" name="recaddress" type="text" placeholder="enter recipient address" class="form-control input-md">
+    
+  </div>
+</div>
+
+
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Amount</label>  
+  <div class="col-md-4">
+  <input id="amount" name="amount" type="text" placeholder="enter amount in wei" class="form-control input-md">
+    
+  </div>
+</div>
+
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Total gas</label>  
+  <div class="col-md-4">
+  <input id="gas" name="gas" type="text" placeholder="enter total gas" class="form-control input-md">
+    
+  </div>
+</div>
+
+<!-- Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for=""></label>
+  <div class="col-md-4">
+    <button id="subadd" name="subadd" class="btn btn-primary" onclick="sign_send_transaction()">Sign and Send Transaction</button>
+  </div>
+</div>
+
+</fieldset>
+      
+<fieldset class="form-horizontal">
+
+<!-- Form Name -->
+<legend>Transaction Receipt</legend>
+
+<!-- Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for=""></label>
+  <div class="col-md-12" id="receipt">
+  </div>
+</div>
+
+</fieldset>
+      <footer class="footer">
+        <p>Complete Ethereum Dapp</p>
+      </footer>
+
+    </div> <!-- /container -->
+  
+ <!-- ABI and ADDRESS -->
+    <script>
+    var connected, myContract;
+
+var current_address_span = document.getElementById("currentaddress")
+
+// console.log(SmartContractAddress);
+
+async function connect_to_metamask() {
+
+    // Modern DApp Browser
+    if (window.ethereum) {
+
+        web3 = new Web3(window.ethereum)
+
+        try {
+
+            ethereum.enable()
+
+            ethereum.request({
+                method: 'eth_accounts',
+            }).then((result) => {
+                current_address = result[0]
+                current_address_span.innerHTML = `METAMASK ACCOUNT:- : ${current_address}`
+                console.log(current_address)
+            });
+
+            console.log("connected")
+
+            return true;
+
+        } catch (err) {
+
+            return false;
+
+        }
+        // For Legacy Browser
+    } else if (window.web3) {
+
+        window.web3 = new Web3(web3.currentProvider);
+
+        return true;
+
+    } else {
+
+        alert("Please Install Metamask !");
+
+        return false;
+    }
+
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+    connected = await connect_to_metamask();
+    // Connect to smart contract 
+    myContract = new web3.eth.Contract(contract_abi,contract_address);
+    console.log(myContract);
+});
+
+async function sign_send_transaction(){
+    let to_address=document.getElementById("recaddress").value;
+    let Private_Key=document.getElementById("pkey").value;
+    let amount=document.getElementById("amount").value;
+    let gas=document.getElementById("gas").value;
+
+    let SingedTransaction = await web3.eth.accounts.signTransaction({
+      from:current_address,
+      gas:gas,
+       to:to_address,
+       value:amount
+  }, Private_Key).then((result)=>{
+    web3.eth.sendSignedTransaction(result.rawTransaction).then((receipt) => {
+        console.log(receipt);
+        
+        let receipt_table= document.createElement('table');
+        receipt_table.innerHTML=`
+              <table>
+        <tr>
+          <td>BlockHash</td>
+          <td>${receipt["blockHash"]}</td>
+        </tr>
+        <tr>
+          <td>BlockNumber</td>
+          <td>${receipt["blockNumber"]}</td>
+        </tr>
+        <tr>
+          <td>from</td>
+          <td>${receipt["from"]}</td>
+        </tr>
+        <tr>
+          <td>to</td>
+          <td>${receipt["to"]}</td>
+        </tr>
+        <tr>
+          <td>transactionHash</td>
+          <td>${receipt["transactionHash"]}</td>
+        </tr>
+      </table>
+        `;
+        document.getElementById('receipt').appendChild(receipt_table);
+
+  })
+});
+
+}
+
+    </script>
+</body>
+</html>

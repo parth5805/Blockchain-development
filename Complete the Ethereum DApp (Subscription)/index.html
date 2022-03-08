@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Subscription Dapp</title>
+
+    <script src="node_modules/web3.js-browser/build/web3.js"></script>
+    <script src="node_modules/web3/dist/web3.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+</head>
+
+  <body>
+
+    <div class="container">
+      <div class="header clearfix">
+        <nav>
+          <ul class="nav nav-pills float-right">
+            
+          </ul>
+        </nav>
+        <h3 class="text-muted" style="text-align:center;">Subscription Dapp</h3>
+      </div>
+
+      <div class="breadcrumb">
+        
+        
+        <p ><a class="btn btn-lg btn-success" href="#"  id="currentaddress" role="button">Metamask Is Not Connected</a></p>
+      </div>
+
+<fieldset class="form-horizontal">
+
+<!-- Form Name -->
+<legend>Function Addsubscription()</legend>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">subscription name</label>  
+  <div class="col-md-4">
+  <input id="subname" name="subname" type="text" placeholder="enter subscription name" class="form-control input-md">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Price per period</label>  
+  <div class="col-md-4">
+  <input id="subprice" name="subprice" type="text" placeholder="enter subscription price per period" class="form-control input-md">
+    
+  </div>
+</div>
+
+<!-- Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for=""></label>
+  <div class="col-md-4">
+    <button id="subadd" name="subadd" class="btn btn-primary" onclick="addsub()">Add</button>
+  </div>
+</div>
+
+</fieldset>
+      
+<fieldset class="form-horizontal">
+
+<!-- Form Name -->
+<legend>Function Subscribe()</legend>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">subscription id</label>  
+  <div class="col-md-4">
+  <input id="subid" name="subid" type="text" placeholder="enter subscription id" class="form-control input-md">
+    
+  </div>
+</div>
+
+<div class="form-group">
+    <label class="col-md-4 control-label" for="textinput">Value</label>  
+    <div class="col-md-4">
+    <input id="subamount" name="subamount" type="text" placeholder="enter subscription amount in wei" class="form-control input-md">
+      
+    </div>
+  </div>
+
+<!-- Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for=""></label>
+  <div class="col-md-4">
+    <button id="subscribe" name="subscribe" onclick="callsubscribe()"  class="btn btn-primary">Subscribe</button>
+  </div>
+</div>
+
+</fieldset>
+     
+<fieldset class="form-horizontal">
+
+<!-- Form Name -->
+<legend>Function Check_Subscription()</legend>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">subscription id</label>  
+  <div class="col-md-4">
+  <input id="csubid" name="csubid" type="text" placeholder="enter subscription id" class="form-control input-md">
+    
+  </div>
+</div>
+
+<!-- Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for=""></label>
+  <div class="col-md-4">
+    <button id="check_sub" name="check_sub" onclick="check_sub()" class="btn btn-primary">check Subscription</button>
+    <label ><p id="sub_period"></p></label>
+  </div>
+</div>
+
+</fieldset>
+
+<fieldset class="form-horizontal">
+
+<!-- Form Name -->
+<legend>Function get_contract_balance()</legend>
+
+<!-- Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for=""></label>
+  <div class="col-md-4">
+    <button id="" name="" class="btn btn-primary" onclick="check_c_balance()">check contract balance</button>
+    <label ><p id="c_balance">0</p></label>
+  </div>
+</div>
+
+</fieldset>
+      
+      
+
+      <footer class="footer">
+        <p>Complete Ethereum Dapp</p>
+      </footer>
+
+    </div> <!-- /container -->
+  
+ <!-- ABI and ADDRESS -->
+ <script src="SmartContract.js"></script>  
+    <script>
+    var connected, myContract;
+
+var current_address_span = document.getElementById("currentaddress")
+
+// console.log(SmartContractAddress);
+
+async function connect_to_metamask() {
+
+    // Modern DApp Browser
+    if (window.ethereum) {
+
+        web3 = new Web3(window.ethereum)
+
+        try {
+
+            ethereum.enable()
+
+            ethereum.request({
+                method: 'eth_accounts',
+            }).then((result) => {
+                current_address = result[0]
+                current_address_span.innerHTML = `METAMASK ACCOUNT:- : ${current_address}`
+                console.log(current_address)
+            });
+
+            console.log("connected")
+
+            return true;
+
+        } catch (err) {
+
+            return false;
+
+        }
+        // For Legacy Browser
+    } else if (window.web3) {
+
+        window.web3 = new Web3(web3.currentProvider);
+
+        return true;
+
+    } else {
+
+        alert("Please Install Metamask !");
+
+        return false;
+    }
+
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+    connected = await connect_to_metamask();
+    // Connect to smart contract 
+    myContract = new web3.eth.Contract(contract_abi,contract_address);
+    console.log(myContract);
+});
+
+
+    async function addsub() {
+      let subname=document.getElementById("subname").value;
+      let subprice=document.getElementById("subprice").value;
+      let res =  await myContract.methods.addSubscription(subname,subprice).send({from:current_address});
+      console.log(res);
+    }
+
+    async function callsubscribe() {
+      let subid=document.getElementById("subid").value;
+      let subamount=document.getElementById("subamount").value;
+      let res =  await myContract.methods.Subscribe(subid).send({from:current_address,value:subamount});
+    } 
+    
+    async function check_c_balance() {
+      let res =  await myContract.methods.get_C_balance().call();
+      document.getElementById("c_balance").innerHTML=res;
+      console.log(res);
+    } 
+
+    async function check_sub() {
+      let subid=document.getElementById("csubid").value;
+      try
+      {
+      let res = await myContract.methods.check_subscription(subid).call({from:current_address});
+      document.getElementById("sub_period").innerHTML=res+" "+"period is left";   
+     console.log(res);
+         }
+      catch (e) {
+        alert("ERROR");
+    }
+
+    } 
+    
+
+    </script>
+</body>
+</html>

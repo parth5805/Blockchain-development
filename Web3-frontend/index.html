@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Subscription Dapp</title>
+
+    <script src="node_modules/web3.js-browser/build/web3.js"></script>
+    <script src="node_modules/web3/dist/web3.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+</head>
+
+  <body>
+
+    <div class="container">
+      <div class="header clearfix">
+        <nav>
+          <ul class="nav nav-pills float-right">
+            
+          </ul>
+        </nav>
+        <h3 class="text-muted" style="text-align:center;">WEB3 Interactions frontend</h3>
+      </div>
+
+      <div class="breadcrumb">
+        
+        
+        <p ><a class="btn btn-lg btn-success" href="#"  id="currentaddress" role="button">Metamask Is Not Connected</a></p>
+      </div>
+
+<fieldset class="form-horizontal">
+
+<!-- Form Name -->
+<legend>Add Network to metamask with single click</legend>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Network Name</label>  
+  <div class="col-md-4">
+  <input id="netname" name="netname" type="text" placeholder="enter Network Name" class="form-control input-md">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">New RPC URL</label>  
+  <div class="col-md-4">
+  <input id="newrpc" name="newrpc" type="text" placeholder="Enter New RPC URL" class="form-control input-md">
+    
+  </div>
+</div>
+
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Chain ID</label>  
+  <div class="col-md-4">
+  <input id="chainid" name="chainid" type="text" placeholder="Enter Chain ID" class="form-control input-md">
+    
+  </div>
+</div>
+
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Currency Symbol(Optional)</label>  
+  <div class="col-md-4">
+  <input id="currsym" name="currsym" type="text" placeholder="Enter Currency Symbol" class="form-control input-md">
+    
+  </div>
+</div>
+
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Block Explorer URL(Optional)</label>  
+  <div class="col-md-4">
+  <input id="blockeurl" name="blockeurl" type="text" placeholder="Enter Block Explorer URL" class="form-control input-md">
+    
+  </div>
+</div>
+
+<!-- Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for=""></label>
+  <div class="col-md-4">
+    <button id="subadd" name="subadd" class="btn btn-primary" onclick="addnetwork()">Add Network</button>
+  </div>
+</div>
+
+</fieldset>
+      
+<fieldset class="form-horizontal">
+
+<!-- Form Name -->
+<legend>Get gas price of the block</legend>
+
+<!-- Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for=""></label>
+  <div class="col-md-4">
+    <button id="" name="" class="btn btn-primary" onclick="check_g_price()">chech Gas Price</button>
+    <label ><p id="g_price">0</p></label>
+  </div>
+</div>
+
+</fieldset>
+     
+<fieldset class="form-horizontal">
+
+<!-- Form Name -->
+<legend>Estimate gas price of a transaction </legend>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Encoded ABI</label>  
+  <div class="col-md-4">
+  <input id="enabi" name="enabi" type="text" placeholder="enter Encoded AbI" class="form-control input-md">
+  </div>
+</div>
+
+<!-- Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for=""></label>
+  <div class="col-md-4">
+    <button id="check_gas" name="check_gas" onclick="check_estimate_gas()" class="btn btn-primary">check Estimate Gas</button>
+    <label ><p id="e_gas"></p></label>
+  </div>
+</div>
+
+</fieldset>
+
+<fieldset class="form-horizontal">
+
+<!-- Form Name -->
+<legend>Send ethers with web3</legend>
+
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">To</label>  
+  <div class="col-md-4">
+  <input id="resaddress" name="resaddress" type="text" placeholder="Enter recipient address" class="form-control input-md">
+    
+  </div>
+</div>
+<!-- Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textinput">Amount</label>  
+  <div class="col-md-4">
+  <input id="amount" name="amount" type="text" placeholder="Enter amount in wei" class="form-control input-md">
+    
+  </div>
+</div>
+
+<div class="form-group">
+  <label class="col-md-4 control-label" for=""></label>
+  <div class="col-md-4">
+    <button id="" name="" class="btn btn-primary" onclick="send_ether()">Send Ether</button>
+  </div>
+</div>
+
+</fieldset>
+      
+      
+
+      <footer class="footer">
+        <p>Complete Ethereum Dapp</p>
+      </footer>
+
+    </div> <!-- /container -->
+  
+ <!-- ABI and ADDRESS -->
+ <script src="SmartContract.js"></script>  
+    <script>
+    var connected, myContract;
+
+var current_address_span = document.getElementById("currentaddress")
+
+// console.log(SmartContractAddress);
+
+async function connect_to_metamask() {
+
+    // Modern DApp Browser
+    if (window.ethereum) {
+
+        web3 = new Web3(window.ethereum)
+
+        try {
+
+            ethereum.enable()
+
+            ethereum.request({
+                method: 'eth_accounts',
+            }).then((result) => {
+                current_address = result[0]
+                current_address_span.innerHTML = `METAMASK ACCOUNT:- : ${current_address}`
+                console.log(current_address)
+            });
+
+            console.log("connected")
+
+            return true;
+
+        } catch (err) {
+
+            return false;
+
+        }
+        // For Legacy Browser
+    } else if (window.web3) {
+
+        window.web3 = new Web3(web3.currentProvider);
+
+        return true;
+
+    } else {
+
+        alert("Please Install Metamask !");
+
+        return false;
+    }
+
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+    connected = await connect_to_metamask();
+    // Connect to smart contract 
+    myContract = new web3.eth.Contract(contract_abi,contract_address);
+    console.log(myContract);
+});
+
+
+    async function addnetwork() {
+      let netname=document.getElementById("netname").value;
+      let newrpc=document.getElementById("newrpc").value;
+      let chainid=document.getElementById("chainid").value;
+      let currsym=document.getElementById("currsym").value;
+      let blockeurl=document.getElementById("blockeurl").value;
+let hchainid = parseInt(chainid, 10).toString(16)     
+
+    try {
+      await ethereum.request({
+        method: 'wallet_addEthereumChain',
+        params: [
+          {
+            chainName:netname,
+            chainId:'0x'+hchainid,
+            chainName: netname,
+            nativeCurrency: {
+    symbol: currsym,
+    decimals: 18
+  },
+            rpcUrls: [newrpc] ,
+            blockExplorerUrls: [blockeurl]
+          },
+        ],
+      });
+    } catch (addError) {
+      // handle "add" error
+    }
+  }
+
+  async function check_g_price() {
+      let res =  await web3.eth.getGasPrice();
+        let price=web3.utils.fromWei(res, 'gwei');
+      document.getElementById("g_price").innerHTML=price+" "+"Gwei";
+      console.log(res);
+    } 
+
+    
+
+    async function check_estimate_gas() {
+      let data =document.getElementById("enabi").value;
+      let res = await web3.eth.estimateGas({to: current_address,data: data});
+      document.getElementById("e_gas").innerHTML=res;
+      console.log(res);
+    } 
+    
+    async function send_ether() {
+      let to =document.getElementById("resaddress").value;
+      let amount =document.getElementById("amount").value;
+      let res = await web3.eth.sendTransaction({from: current_address,to: to,value: amount});
+      console.log(res);
+    } 
+        
+
+    </script>
+</body>
+</html>

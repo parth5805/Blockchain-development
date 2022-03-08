@@ -1,0 +1,40 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "C:\\Users\\parth\\Desktop\\hardhat-test\\contracts\\Token.sol": {
+      "lastModificationDate": 1643798469426,
+      "contentHash": "be7b02dacf1bffd283ac26686d9a7442",
+      "sourceName": "contracts/Token.sol",
+      "solcConfig": {
+        "version": "0.8.4",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.5.0 <0.9.0"
+      ],
+      "artifacts": [
+        "ParthToken"
+      ]
+    }
+  }
+}
